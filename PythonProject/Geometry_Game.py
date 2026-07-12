@@ -88,3 +88,8 @@ rectangle.draw(canvas=myturtle)
 user_point.draw(canvas=myturtle)
 
 turtle.done()
+
+
+#this is a simple geometry game where the user guesses a point and the area of a randomly generated rectangle. The program checks 
+# if the guessed point is inside the rectangle and calculates the difference between the actual area and the user's guessed area. 
+# It also visually represents the rectangle and the guessed point using the turtle graphics library.
