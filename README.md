@@ -1,1 +1,3 @@
 # my_repository
+this is an example read me!
+this is my first repo.

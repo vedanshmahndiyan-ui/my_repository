@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>AI Trading Dashboard</title>
+
+<link rel="icon" href="data:,">
+
+<script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #020617;
+    color: white;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+}
+
+h1 {
+    color: #38bdf8;
+}
+
+.search-box {
+    margin: 20px;
+}
+
+input {
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    width: 220px;
+    text-align: center;
+}
+
+button {
+    padding: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #38bdf8;
+    cursor: pointer;
+    margin-left: 8px;
+}
+
+.dashboard {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.card {
+    background: #0f172a;
+    padding: 15px;
+    border-radius: 12px;
+    min-width: 160px;
+    text-align: center;
+}
+
+.chart-container {
+    width: 90%;
+    max-width: 1100px;
+    margin-top: 30px;
+}
+
+#chart {
+    width: 100%;
+    height: 400px;
+}
+
+#macdChart {
+    width: 100%;
+    height: 200px;
+    margin-top: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🚀 AI Trading Dashboard</h1>
+
+<div class="search-box">
+    <input id="stock" placeholder="Enter stock (TCS)">
+    <button onclick="start()">Analyze</button>
+</div>
+
+<div class="dashboard" id="dashboard" style="display:none;">
+
+<div class="card"><h3 id="symbol"></h3><p>₹ <span id="price"></span></p></div>
+<div class="card"><p>Trend: <span id="trend"></span></p><p>RSI: <span id="rsi"></span></p></div>
+<div class="card"><p>MA20: <span id="ma20"></span></p><p>MA50: <span id="ma50"></span></p></div>
+<div class="card"><p>MACD: <span id="macd"></span></p><p>Signal: <span id="macd_signal"></span></p></div>
+<div class="card"><p>Signal: <span id="signal"></span></p><p>Confidence: <span id="confidence"></span>%</p></div>
+<div class="card"><p>Pattern:</p><p id="pattern"></p><p id="pattern_action"></p></div>
+<div class="card"><p>Candle:</p><p id="candle_pattern"></p><p id="candle_action"></p></div>
+
+</div>
+
+<div class="chart-container">
+    <div id="chart"></div>
+    <div id="macdChart"></div>
+</div>
+
+</div>
+
+<script>
+
+let chart, candleSeries, macdChart, macdLine, signalLine;
+let stock = "";
+let interval;
+
+// 🔥 CREATE CHARTS PROPERLY
+function createCharts() {
+
+    document.getElementById("chart").innerHTML = "";
+    document.getElementById("macdChart").innerHTML = "";
+
+    chart = LightweightCharts.createChart(
+        document.getElementById("chart"),
+        {
+            width: document.getElementById("chart").clientWidth,
+            height: 400,
+            layout: { background: { color: "#020617" }, textColor: "#DDD" },
+            grid: { vertLines: { color: "#222" }, horzLines: { color: "#222" } }
+        }
+    );
+
+    candleSeries = chart.addCandlestickSeries();
+
+    macdChart = LightweightCharts.createChart(
+        document.getElementById("macdChart"),
+        {
+            width: document.getElementById("macdChart").clientWidth,
+            height: 200,
+            layout: { background: { color: "#020617" }, textColor: "#DDD" },
+            grid: { vertLines: { color: "#222" }, horzLines: { color: "#222" } }
+        }
+    );
+
+    macdLine = macdChart.addLineSeries({ color: "#38bdf8" });
+    signalLine = macdChart.addLineSeries({ color: "#f43f5e" });
+}
+
+// 🔥 DRAW DATA
+function drawCharts(priceData, macdData) {
+
+    createCharts();
+
+    candleSeries.setData(priceData);
+
+    macdLine.setData(
+        macdData.map(d => ({ time: d.time, value: d.macd }))
+    );
+
+    signalLine.setData(
+        macdData.map(d => ({ time: d.time, value: d.signal }))
+    );
+}
+
+// 🔥 FETCH DATA
+async function analyze() {
+
+    let res = await fetch(`http://127.0.0.1:8000/analyze/${stock}`);
+    let data = await res.json();
+
+    if (data.error) {
+        alert(data.error);
+        return;
+    }
+
+    document.getElementById("dashboard").style.display = "flex";
+
+    document.getElementById("symbol").innerText = data.symbol;
+    document.getElementById("price").innerText = data.price;
+    document.getElementById("trend").innerText = data.trend;
+    document.getElementById("rsi").innerText = data.rsi;
+    document.getElementById("ma20").innerText = data.ma20;
+    document.getElementById("ma50").innerText = data.ma50;
+    document.getElementById("macd").innerText = data.macd;
+    document.getElementById("macd_signal").innerText = data.macd_signal;
+    document.getElementById("signal").innerText = data.signal;
+    document.getElementById("confidence").innerText = data.confidence;
+
+    document.getElementById("pattern").innerText = data.pattern;
+    document.getElementById("pattern_action").innerText = data.pattern_action;
+
+    document.getElementById("candle_pattern").innerText = data.candle_pattern;
+    document.getElementById("candle_action").innerText = data.candle_action;
+
+    drawCharts(data.history, data.macd_history);
+}
+
+// 🔥 START AUTO REFRESH
+function start() {
+    stock = document.getElementById("stock").value.trim();
+    if (!stock) return alert("Enter stock");
+
+    analyze();
+
+    clearInterval(interval);
+    interval = setInterval(analyze, 10000);
+}
+
+// 🔥 FIX RESPONSIVE RESIZE
+window.addEventListener("resize", () => {
+    if (chart && macdChart) {
+        chart.applyOptions({ width: document.getElementById("chart").clientWidth });
+        macdChart.applyOptions({ width: document.getElementById("macdChart").clientWidth });
+    }
+});
+
+</script>
+
+</body>
+</html>
