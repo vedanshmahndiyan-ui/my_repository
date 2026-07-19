@@ -22,7 +22,7 @@ def save_tasks():
         file.write(task + "\n")
     file.close()
 
-tasks = load_tasks()
+load_tasks()
 
 def initial_tasks(task):
     num_tasks = int(input('how many tasks do you want to add to your to-do list?: '))
@@ -63,7 +63,7 @@ def quit():
     print("Exiting the To-Do List App. Goodbye!")
     exit()
 
-tasks = load_tasks()
+initial_tasks(tasks)
 
 while True:
     print('\nOptions -> view tasks[v] | add task[a] | finish task[f] | quit[q]')
@@ -78,6 +78,6 @@ while True:
         quit()
     elif choice == 'ilovedoom':
         print('You have selected the secret option!')
-        print('Fun Fact[totally not tampered with]: Doom is the best game ever made, if you like anything else...just know that I will find you and make you play Doom until you like it. You have been warned. ')
+        print('Fun Fact[totally not tampered with]: Doom is the best game ever made, if you like anything else...just know that I will find you and make you play Doom until you wont be able to play anything else. You have been warned. ')
     else:
         print('Invalid choice. Please enter a valid option.')
