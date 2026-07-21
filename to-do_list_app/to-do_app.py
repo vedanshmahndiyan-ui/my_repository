@@ -2,13 +2,6 @@ import os
 
 FILENAME = 'tasks.txt'
 
-user_name = input("Enter your name: ")
-
-if user_name.isdigit():
-    print("Invalid input. Please enter a valid name.")
-    exit()
-else:
-    print(f"Hello, {user_name}! Welcome to the To-Do List App.")
 
 finished_tasks = []
 
@@ -92,6 +85,14 @@ def task_update():
     else:
         print("Your to-do list is empty.")
     save_tasks()
+
+while True:
+    user_name = input("Enter your name: ")
+    #if type(user_name) != str or user_name.isalpha() or user_name.strip() == "":
+    if not user_name.strip() or not user_name.replace(" ", "").isalpha():    
+        print("Invalid input. Please enter a valid name.")
+    else:
+        print(f"Hello, {user_name}! Welcome to the To-Do List App.")
 
 initial_tasks(tasks)
 
