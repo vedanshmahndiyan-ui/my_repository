@@ -1,0 +1,126 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #1e1e2e;
+    color: #f5f5f5;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.game {
+    width: 90%;
+    max-width: 420px;
+    padding: 28px 24px;
+    background: #2a2a40;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    text-align: center;
+}
+
+h1 {
+    margin: 0 0 20px;
+    font-size: 1.6rem;
+    letter-spacing: 1px;
+}
+
+.section-label {
+    margin: 0 0 10px;
+    color: #b8b8d0;
+}
+
+.button-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 14px;
+}
+
+button {
+    font-family: inherit;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 10px 16px;
+    transition: transform 0.1s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+.move-btn {
+    flex: 1;
+    background: #3d3d5c;
+    color: #f5f5f5;
+}
+
+.move-btn:hover {
+    background: #50507a;
+}
+
+/* added by main.js when a move is picked */
+.move-btn.selected {
+    background: #6c63ff;
+    box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.4);
+}
+
+.action-btn {
+    width: 100%;
+    background: #2ecc71;
+    color: #10301d;
+    font-weight: bold;
+}
+
+.action-btn:hover {
+    background: #27ae60;
+}
+
+.board {
+    margin: 22px 0;
+    padding: 16px;
+    background: #1e1e2e;
+    border-radius: 12px;
+}
+
+.board p {
+    margin: 8px 0;
+}
+
+.scores {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px 0;
+}
+
+.result {
+    font-size: 1.2rem;
+    font-weight: bold;
+    min-height: 1.6em;
+}
+
+#computer-move,
+#result {
+    color: #ffd166;
+}
+
+.reset-btn {
+    background: #e74c3c;
+    color: #fff;
+}
+
+.reset-btn:hover {
+    background: #c0392b;
+}
+
+@media (max-width: 400px) {
+    .button-row {
+        flex-direction: column;
+    }
+}
