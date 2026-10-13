@@ -10,18 +10,104 @@ tasks:
     7. display current clicks
 -->
 <!--code[idk what im doing]-->
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Time Waste Project</title>
-    <head><centre><b>The Time Waste Project</b></centre></head>
-    <body>
-        <!--ill get to this after js-->
-        <button id="myButton">Click Me</button>
-        <button id="increaseClicks">Increase Clicks</button>
-        <button id="decreaseClicks">Decrease Clicks</button>
-        <button id="resetClicks">Reset Clicks</button>
-        <p id="timeWasted">Time Wasted: 0 seconds</p>
-        <p id="currentColor">Current Color: Default</p>
-        <p id="currentClicks">Current Clicks: 0</p>
-        <script src="main.js"></script>
-    </body>
+
+    <style>
+        /* Page: centre everything and let the background colour fade smoothly */
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+            background-color: #FFFFFF;
+            color: #000000;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* Card: semi-transparent so it looks fine on any random colour */
+        .card {
+            width: 90%;
+            max-width: 420px;
+            padding: 24px 28px;
+            border-radius: 16px;
+            background: rgba(128, 128, 128, 0.15);
+            border: 1px solid rgba(128, 128, 128, 0.35);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            margin: 0 0 20px 0;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin: 10px 0;
+        }
+
+        /* Buttons: take the page's text colour so they stay readable */
+        button {
+            font-size: 1rem;
+            padding: 8px 14px;
+            margin: 4px;
+            border-radius: 8px;
+            border: 2px solid currentColor;
+            background: transparent;
+            color: inherit;
+            cursor: pointer;
+            transition: transform 0.1s ease, background-color 0.2s ease;
+        }
+
+        button:hover {
+            background: rgba(128, 128, 128, 0.3);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        /* The numbers that change get a bold look */
+        #timeWasted, #currentColor, #currentClicks {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+
+        <!-- 1. Heading at the top -->
+        <h1>The Time Waste Project</h1>
+
+        <!-- 2. Time Wasted display -->
+        <p>Time Wasted: <span id="timeWasted">0</span> seconds</p>
+
+        <!-- 3. New Random Color button placed directly in front of the Color Status -->
+        <div style="margin-bottom: 10px;">
+            <button id="randomColorBtn">Random Color</button>
+        </div>
+        <p>Current Color: <span id="currentColor">Default</span></p>
+
+        <!-- 4. The Click Buttons -->
+        <div style="margin-bottom: 10px;">
+            <button id="increaseClicks">Increase Clicks</button>
+            <button id="decreaseClicks">Decrease Clicks</button>
+            <button id="resetClicks">Reset Clicks</button>
+        </div>
+
+        <!-- 5. Current Clicks display -->
+        <p>Current Clicks: <span id="currentClicks">0</span></p>
+
+    </div>
+
+    <script src="main.js"></script>
+</body>
 </html>
